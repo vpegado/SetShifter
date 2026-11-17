@@ -2,6 +2,8 @@
 
 A World of Warcraft addon that equips an Equipment Manager set when you change shapeshift form.
 
+![SetShifter settings panel, with a gear set mapped to each druid form](screenshots/options.png)
+
 It works with any class that has a stance bar:
 
 - **Druids:** switch to a feral set when you go into Cat Form and back to your healing set when you return to caster form.
