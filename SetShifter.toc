@@ -1,8 +1,10 @@
 ## Interface: 16001, 11509
 ## Title: SetShifter
 ## Notes: Equips an Equipment Manager set when you change shapeshift form.
-## Version: 1.2.0
+## IconTexture: Interface\PaperDollInfoFrame\UI-GearManager-Button
+## Version: 1.3.0
 ## SavedVariablesPerCharacter: SetShifterDB
 
 SetShifter.lua
 Options.lua
+Minimap.lua

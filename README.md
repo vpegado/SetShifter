@@ -6,6 +6,11 @@ It works with any class that has a stance bar:
 
 - **Druids:** switch to a feral set when you go into Cat Form and back to your healing set when you return to caster form.
 - **Warriors:** put on a shield set when you enter Defensive Stance and a two-hander when you enter Battle or Berserker Stance.
+- **Priests:** put on a shadow set in Shadowform and a healing set when you leave it.
+- **Rogues:** equip a dagger for Ambush when you enter Stealth and switch back when you leave it.
+- **Paladins:** auras are on the stance bar, so each aura can have its own set.
+
+Hunter aspects aren't on the stance bar in Classic, so hunters can't use SetShifter.
 
 ## Installation
 
@@ -16,9 +21,19 @@ It works with any class that has a stance bar:
 
 1. Create your gear sets in the Equipment Manager on the character panel.
 2. Open **Options → AddOns → SetShifter**, or type `/setshifter`.
-3. Pick a set for each form. **Caster** (no form) is a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
+3. Pick a set for each form. **No form** counts as a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
 
 SetShifter equips the set mapped to a form whenever you shift into that form.
+
+### Minimap button
+
+The minimap button shows the icon of your current set. If no set is equipped, it shows your current form's icon instead.
+
+- **Click** to open the settings.
+- **Drag** to move it around the minimap edge.
+- **Hover** to see your current form and set.
+
+To hide it, untick **Show minimap button** in the settings, or type `/setshifter minimap`.
 
 ### Notes
 
@@ -37,3 +52,4 @@ SetShifter equips the set mapped to a form whenever you shift into that form.
 | `/setshifter list` | Show which set is mapped to each form |
 | `/setshifter equip` | Equip the set for your current form now |
 | `/setshifter on` / `off` | Turn automatic swapping on or off |
+| `/setshifter minimap` | Show or hide the minimap button |

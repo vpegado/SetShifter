@@ -93,8 +93,19 @@ enable:SetScript("OnClick", function(self)
 	ns.db.enabled = self:GetChecked() and true or false
 end)
 
+local minimap = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
+minimap:SetSize(24, 24)
+minimap:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 0, -2)
+local minimapLabel = minimap:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+minimapLabel:SetPoint("LEFT", minimap, "RIGHT", 2, 0)
+minimapLabel:SetText("Show minimap button")
+minimap:SetScript("OnClick", function(self)
+	ns.db.minimap.hide = not self:GetChecked()
+	ns.UpdateMinimapButton()
+end)
+
 local formsHeader = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-formsHeader:SetPoint("TOPLEFT", enable, "BOTTOMLEFT", 4, -16)
+formsHeader:SetPoint("TOPLEFT", minimap, "BOTTOMLEFT", 4, -16)
 formsHeader:SetText("Forms")
 
 local noSets = panel:CreateFontString(nil, "ARTWORK", "GameFontDisableSmall")
@@ -178,6 +189,7 @@ end
 function Refresh()
 	if not ns.db then return end
 	enable:SetChecked(ns.db.enabled)
+	minimap:SetChecked(not ns.db.minimap.hide)
 	noSets:SetShown(#ns.SetNames() == 0)
 
 	for _, row in ipairs(rows) do row:Hide() end

@@ -1,7 +1,7 @@
 -- SetShifter: equip an Equipment Manager set whenever you change shapeshift form.
 --
 -- Map forms to sets in Options > AddOns > SetShifter (or /setshifter).
--- "Caster" (no form) is a form too, so map it to switch back when you leave one.
+-- "No form" is a form too, so map it to switch back when you leave one.
 --
 -- Works for any class with a stance bar: druid forms, warrior stances, etc.
 --
@@ -11,8 +11,8 @@
 
 local ADDON, ns = ...
 
-local CASTER = "Caster"
-ns.CASTER = CASTER
+local NO_FORM = "No form"
+ns.NO_FORM = NO_FORM
 
 local db
 local lastForm
@@ -37,7 +37,7 @@ end
 -- Key for a form index. Keyed by spell name rather than index, since indexes
 -- shift with talents (e.g. Moonkin Form).
 local function FormKey(index)
-	if not index or index == 0 then return CASTER end
+	if not index or index == 0 then return NO_FORM end
 	local _, _, _, spellID = GetShapeshiftFormInfo(index)
 	local name = spellID and GetSpellNameCompat(spellID)
 	return name or ("Form " .. index)
@@ -47,13 +47,13 @@ function ns.CurrentFormKey()
 	return FormKey(GetShapeshiftForm())
 end
 
--- Warriors are always in a stance, so "Caster" (no form) never applies.
+-- Warriors are always in a stance, so "No form" never applies.
 local _, playerClass = UnitClass("player")
-local HAS_CASTER = playerClass ~= "WARRIOR"
+local HAS_NO_FORM = playerClass ~= "WARRIOR"
 
--- All forms the character knows: { {key=, icon=}, ... }, Caster first.
+-- All forms the character knows: { {key=, icon=}, ... }, "No form" first.
 function ns.KnownForms()
-	local forms = HAS_CASTER and { { key = CASTER } } or {}
+	local forms = HAS_NO_FORM and { { key = NO_FORM } } or {}
 	for i = 1, GetNumShapeshiftForms() do
 		local icon = GetShapeshiftFormInfo(i)
 		forms[#forms + 1] = { key = FormKey(i), icon = icon }
@@ -151,7 +151,14 @@ frame:SetScript("OnEvent", function(_, event, arg1)
 		db = SetShifterDB
 		db.sets = nil -- v1.0 gear snapshots; replaced by Equipment Manager sets
 		db.map = db.map or {}
+		-- v1.2 and earlier called the no-form state "Caster".
+		if db.map.Caster and not db.map[NO_FORM] then
+			db.map[NO_FORM] = db.map.Caster
+		end
+		db.map.Caster = nil
 		if db.enabled == nil then db.enabled = true end
+		db.minimap = db.minimap or {}
+		db.minimap.angle = db.minimap.angle or 225
 		ns.db = db
 		frame:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
@@ -198,6 +205,11 @@ SlashCmdList.SETSHIFTER = function(msg)
 		db.enabled = (cmd == "on")
 		Print("Automatic swapping " .. (db.enabled and "enabled." or "disabled."))
 		if ns.RefreshOptions then ns.RefreshOptions() end
+	elseif cmd == "minimap" then
+		db.minimap.hide = not db.minimap.hide
+		ns.UpdateMinimapButton()
+		Print("Minimap button " .. (db.minimap.hide and "hidden." or "shown."))
+		if ns.RefreshOptions then ns.RefreshOptions() end
 	elseif cmd == "" or cmd == "options" or cmd == "config" then
 		ns.OpenOptions()
 	else
@@ -205,5 +217,6 @@ SlashCmdList.SETSHIFTER = function(msg)
 		Print("/setshifter list - show form -> set mappings")
 		Print("/setshifter equip - equip the set for your current form now")
 		Print("/setshifter on | off - toggle automatic swapping")
+		Print("/setshifter minimap - show or hide the minimap button")
 	end
 end
