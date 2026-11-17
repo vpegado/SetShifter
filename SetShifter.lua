@@ -2,6 +2,8 @@
 --
 -- Map forms to sets in Options > AddOns > SetShifter (or /setshifter).
 -- "No form" is a form too, so map it to switch back when you leave one.
+-- "Mounted" can have a set too; it takes priority over your form while you
+-- are mounted, and your form's set goes back on when you dismount.
 --
 -- Works for any class with a stance bar: druid forms, warrior stances, etc.
 --
@@ -13,9 +15,11 @@ local ADDON, ns = ...
 
 local NO_FORM = "No form"
 ns.NO_FORM = NO_FORM
+local MOUNTED = "Mounted"
+ns.MOUNTED = MOUNTED
 
 local db
-local lastForm
+local lastKey
 local pending = false
 
 local function Print(msg)
@@ -45,6 +49,17 @@ end
 
 function ns.CurrentFormKey()
 	return FormKey(GetShapeshiftForm())
+end
+
+function ns.IsMounted()
+	return IsMounted and IsMounted() or false
+end
+
+-- The key whose set should be worn right now: "Mounted" while mounted (if a
+-- set is mapped to it), otherwise the current form.
+function ns.CurrentKey()
+	if db and db.map[MOUNTED] and ns.IsMounted() then return MOUNTED end
+	return ns.CurrentFormKey()
 end
 
 -- Warriors are always in a stance, so "No form" never applies.
@@ -126,11 +141,11 @@ local function EquipForForm(formKey, verbose)
 end
 ns.EquipForForm = EquipForForm
 
-local function OnFormChanged()
-	local form = ns.CurrentFormKey()
-	if form == lastForm then return end
-	lastForm = form
-	if db.enabled then EquipForForm(form) end
+local function OnStateChanged()
+	local key = ns.CurrentKey()
+	if key == lastKey then return end
+	lastKey = key
+	if db.enabled then EquipForForm(key) end
 end
 
 ---------------------------------------------------------------------------
@@ -142,6 +157,11 @@ frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+-- Mount changes: use the dedicated event where the client has it, otherwise
+-- watch the player's auras (mounts are auras in Classic).
+if not pcall(frame.RegisterEvent, frame, "PLAYER_MOUNT_DISPLAY_CHANGED") then
+	frame:RegisterUnitEvent("UNIT_AURA", "player")
+end
 
 local scheduled = false
 frame:SetScript("OnEvent", function(_, event, arg1)
@@ -162,21 +182,22 @@ frame:SetScript("OnEvent", function(_, event, arg1)
 		ns.db = db
 		frame:UnregisterEvent("ADDON_LOADED")
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		-- Record the form we log in with; don't swap gear on login.
-		lastForm = ns.CurrentFormKey()
-	elseif event == "UPDATE_SHAPESHIFT_FORM" then
+		-- Record the state we log in with; don't swap gear on login.
+		lastKey = ns.CurrentKey()
+	elseif event == "UPDATE_SHAPESHIFT_FORM" or event == "PLAYER_MOUNT_DISPLAY_CHANGED"
+		or event == "UNIT_AURA" then
 		-- This event fires in bursts; coalesce into a single check.
 		if not scheduled then
 			scheduled = true
 			C_Timer.After(0.1, function()
 				scheduled = false
-				OnFormChanged()
+				OnStateChanged()
 			end)
 		end
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		if pending and db.enabled then
-			lastForm = ns.CurrentFormKey()
-			EquipForForm(lastForm)
+			lastKey = ns.CurrentKey()
+			EquipForForm(lastKey)
 		end
 	end
 end)
@@ -190,7 +211,9 @@ local function ListMappings()
 		local set = db.map[form.key]
 		Print(("%s: %s"):format(form.key, set or "|cff888888none|r"))
 	end
-	Print("Current form: " .. ns.CurrentFormKey() .. (db.enabled and "" or " (auto-swap OFF)"))
+	Print(("%s: %s"):format(MOUNTED, db.map[MOUNTED] or "|cff888888none|r"))
+	Print("Current form: " .. ns.CurrentFormKey() .. (ns.IsMounted() and " (mounted)" or "")
+		.. (db.enabled and "" or " (auto-swap OFF)"))
 end
 
 SLASH_SETSHIFTER1 = "/setshifter"
@@ -200,7 +223,7 @@ SlashCmdList.SETSHIFTER = function(msg)
 	if cmd == "list" then
 		ListMappings()
 	elseif cmd == "equip" then
-		EquipForForm(ns.CurrentFormKey(), true)
+		EquipForForm(ns.CurrentKey(), true)
 	elseif cmd == "on" or cmd == "off" then
 		db.enabled = (cmd == "on")
 		Print("Automatic swapping " .. (db.enabled and "enabled." or "disabled."))
@@ -215,7 +238,7 @@ SlashCmdList.SETSHIFTER = function(msg)
 	else
 		Print("/setshifter - open settings")
 		Print("/setshifter list - show form -> set mappings")
-		Print("/setshifter equip - equip the set for your current form now")
+		Print("/setshifter equip - equip the set for your current form (or mount) now")
 		Print("/setshifter on | off - toggle automatic swapping")
 		Print("/setshifter minimap - show or hide the minimap button")
 	end

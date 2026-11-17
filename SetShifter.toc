@@ -2,7 +2,7 @@
 ## Title: SetShifter
 ## Notes: Equips an Equipment Manager set when you change shapeshift form.
 ## IconTexture: Interface\PaperDollInfoFrame\UI-GearManager-Button
-## Version: 1.3.0
+## Version: 1.4.0
 ## SavedVariablesPerCharacter: SetShifterDB
 
 SetShifter.lua

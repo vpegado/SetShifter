@@ -38,7 +38,7 @@ border:SetPoint("TOPLEFT")
 -- for combat to end). Returns name, icon; or nil if there is none.
 local function CurrentSet()
 	if not C_EquipmentSet then return end
-	local mapped = ns.db and ns.db.map[ns.CurrentFormKey()]
+	local mapped = ns.db and ns.db.map[ns.CurrentKey()]
 	local equipped, mappedIcon
 	for _, id in ipairs(C_EquipmentSet.GetEquipmentSetIDs()) do
 		local name, setIcon, _, isEquipped = C_EquipmentSet.GetEquipmentSetInfo(id)
@@ -112,7 +112,8 @@ end)
 button:SetScript("OnEnter", function(self)
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 	GameTooltip:AddLine("SetShifter")
-	GameTooltip:AddDoubleLine("Form:", ns.CurrentFormKey(), nil, nil, nil, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Form:", ns.CurrentFormKey() .. (ns.IsMounted() and " (mounted)" or ""),
+		nil, nil, nil, 1, 1, 1)
 	GameTooltip:AddDoubleLine("Set:", CurrentSet() or "|cff888888None|r", nil, nil, nil, 1, 1, 1)
 	if not ns.db.enabled then
 		GameTooltip:AddLine("Automatic swapping is off.", 1, 0.3, 0.3)
@@ -154,6 +155,9 @@ events:SetScript("OnEvent", function(self, event)
 		self:RegisterEvent("EQUIPMENT_SWAP_FINISHED")
 		self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 		self:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+		if not pcall(self.RegisterEvent, self, "PLAYER_MOUNT_DISPLAY_CHANGED") then
+			self:RegisterUnitEvent("UNIT_AURA", "player")
+		end
 	elseif button:IsShown() then
 		UpdateIcon()
 	end

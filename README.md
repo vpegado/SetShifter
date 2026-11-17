@@ -27,6 +27,10 @@ Hunter aspects aren't on the stance bar in Classic, so hunters can't use SetShif
 
 SetShifter equips the set mapped to a form whenever you shift into that form.
 
+### Mounted
+
+The **Mounted** row lets you pick a set to wear while mounted, such as one with riding gloves, spurs or a Carrot on a Stick. While you're mounted it takes priority over your form's set, and your form's set goes back on when you dismount. Leave it at **None** to keep your gear unchanged when you mount.
+
 ### Minimap button
 
 The minimap button shows the icon of your current set. If no set is equipped, it shows your current form's icon instead.
@@ -51,8 +55,8 @@ To hide it, untick **Show minimap button** in the settings, or type `/setshifter
 | Command | Description |
 | --- | --- |
 | `/setshifter` | Open the settings panel |
-| `/setshifter list` | Show which set is mapped to each form |
-| `/setshifter equip` | Equip the set for your current form now |
+| `/setshifter list` | Show which set is mapped to each form and to Mounted |
+| `/setshifter equip` | Equip the set for your current form (or Mounted, if you're mounted) now |
 | `/setshifter on` / `off` | Turn automatic swapping on or off |
 | `/setshifter minimap` | Show or hide the minimap button |
 

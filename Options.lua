@@ -4,6 +4,7 @@ local _, ns = ...
 
 local PAD = 16
 local ROW_HEIGHT = 32
+local MOUNT_ICON = "Interface\\Icons\\Ability_Mount_RidingHorse"
 
 local panel = CreateFrame("Frame")
 panel.name = "SetShifter"
@@ -81,6 +82,7 @@ subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -6)
 subtitle:SetPoint("RIGHT", panel, "RIGHT", -PAD, 0)
 subtitle:SetJustifyH("LEFT")
 subtitle:SetText("Choose an Equipment Manager set for each form or stance. It is equipped when you shift into it. "
+	.. "A Mounted set takes priority while you are mounted. "
 	.. "In combat, only weapons are swapped; the rest of the set goes on when combat ends.")
 
 local enable = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
@@ -164,7 +166,7 @@ local function ShowRow(i, key, icon, known)
 	end
 	row.icon:SetDesaturated(not known)
 
-	local current = ns.CurrentFormKey() == key
+	local current = ns.CurrentKey() == key
 	row.name:SetText((current and "|cff66dd66" or (known and "" or "|cff888888"))
 		.. key .. (current and " (current)" or "") .. ((current or not known) and "|r" or ""))
 
@@ -199,6 +201,9 @@ function Refresh()
 		seen[form.key] = true
 		ShowRow(i, form.key, form.icon, true)
 	end
+	i = i + 1
+	seen[ns.MOUNTED] = true
+	ShowRow(i, ns.MOUNTED, MOUNT_ICON, true)
 	-- Mappings for forms this character doesn't currently have (e.g. a talent
 	-- form after a respec) stay listed so they can be cleared.
 	local extra = {}
@@ -222,6 +227,9 @@ local events = CreateFrame("Frame")
 events:RegisterEvent("EQUIPMENT_SETS_CHANGED")
 events:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
 events:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+if not pcall(events.RegisterEvent, events, "PLAYER_MOUNT_DISPLAY_CHANGED") then
+	events:RegisterUnitEvent("UNIT_AURA", "player")
+end
 events:SetScript("OnEvent", ns.RefreshOptions)
 
 local category
