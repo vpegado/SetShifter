@@ -1,0 +1,15 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Packaged releases
+*.zip
+release/
+
+# Local tooling
+.claude/
