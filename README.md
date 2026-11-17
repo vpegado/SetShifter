@@ -55,3 +55,7 @@ To hide it, untick **Show minimap button** in the settings, or type `/setshifter
 | `/setshifter equip` | Equip the set for your current form now |
 | `/setshifter on` / `off` | Turn automatic swapping on or off |
 | `/setshifter minimap` | Show or hide the minimap button |
+
+## License
+
+[MIT](LICENSE)
