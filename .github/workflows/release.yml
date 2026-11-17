@@ -1,0 +1,40 @@
+# Builds SetShifter-<tag>.zip (a SetShifter/ folder with the addon files) and
+# attaches it to every published GitHub release.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check TOC version matches tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(sed -n 's/^## Version: *//p' SetShifter.toc | tr -d '\r')
+          if [ "v$version" != "$TAG" ] && [ "$version" != "$TAG" ]; then
+            echo "::error::SetShifter.toc says version $version, but the release tag is $TAG"
+            exit 1
+          fi
+
+      - name: Build zip
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          # Files marked export-ignore in .gitattributes are left out.
+          git archive --format=zip --prefix=SetShifter/ -o "SetShifter-$TAG.zip" HEAD
+          unzip -l "SetShifter-$TAG.zip"
+
+      - name: Attach zip to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" "SetShifter-$TAG.zip" --clobber
