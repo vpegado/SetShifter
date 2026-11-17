@@ -3,8 +3,11 @@
 -- Map forms to sets in Options > AddOns > SetShifter (or /setshifter).
 -- "Caster" (no form) is a form too, so map it to switch back when you leave one.
 --
--- Armor can't be changed in combat; a swap requested in combat is applied as
--- soon as combat ends (for whatever form you're in at that moment).
+-- Works for any class with a stance bar: druid forms, warrior stances, etc.
+--
+-- Armor can't be changed in combat. In combat, only the set's weapons are
+-- swapped; the full set is applied as soon as combat ends (for whatever form
+-- you're in at that moment).
 
 local ADDON, ns = ...
 
@@ -44,9 +47,13 @@ function ns.CurrentFormKey()
 	return FormKey(GetShapeshiftForm())
 end
 
+-- Warriors are always in a stance, so "Caster" (no form) never applies.
+local _, playerClass = UnitClass("player")
+local HAS_CASTER = playerClass ~= "WARRIOR"
+
 -- All forms the character knows: { {key=, icon=}, ... }, Caster first.
 function ns.KnownForms()
-	local forms = { { key = CASTER } }
+	local forms = HAS_CASTER and { { key = CASTER } } or {}
 	for i = 1, GetNumShapeshiftForms() do
 		local icon = GetShapeshiftFormInfo(i)
 		forms[#forms + 1] = { key = FormKey(i), icon = icon }
@@ -74,6 +81,23 @@ end
 -- Equipping
 ---------------------------------------------------------------------------
 
+-- Weapon slots can be changed in combat (armor can't).
+local WEAPON_SLOTS = { 16, 17, 18 } -- main hand, off hand, ranged
+
+-- Equip just the weapons from a set. Order matters: main hand first, so a
+-- one-hander replaces a two-hander before the shield goes on.
+local function EquipWeapons(id)
+	local itemIDs = C_EquipmentSet.GetItemIDs(id)
+	if not itemIDs then return end
+	for _, slot in ipairs(WEAPON_SLOTS) do
+		local itemID = itemIDs[slot]
+		-- Empty/ignored slots come back as nil or small sentinel values.
+		if itemID and itemID > 1 and GetInventoryItemID("player", slot) ~= itemID then
+			EquipItemByName(itemID, slot)
+		end
+	end
+end
+
 local function EquipForForm(formKey, verbose)
 	local setName = db.map[formKey]
 	if not setName then
@@ -86,8 +110,11 @@ local function EquipForForm(formKey, verbose)
 		return
 	end
 	if InCombat() then
+		-- Swap weapons now (e.g. a shield for Defensive Stance); the rest of
+		-- the set goes on when combat ends.
+		EquipWeapons(id)
 		pending = true
-		if verbose then Print("In combat; will equip after combat.") end
+		if verbose then Print("In combat; swapped weapons, the rest will equip after combat.") end
 		return
 	end
 	pending = false

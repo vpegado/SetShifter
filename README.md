@@ -2,7 +2,10 @@
 
 A World of Warcraft addon that equips an Equipment Manager set when you change shapeshift form.
 
-For example, you can switch to a feral set when you go into Cat Form and back to your healing set when you return to caster form.
+It works with any class that has a stance bar:
+
+- **Druids:** switch to a feral set when you go into Cat Form and back to your healing set when you return to caster form.
+- **Warriors:** put on a shield set when you enter Defensive Stance and a two-hander when you enter Battle or Berserker Stance.
 
 ## Installation
 
@@ -13,13 +16,13 @@ For example, you can switch to a feral set when you go into Cat Form and back to
 
 1. Create your gear sets in the Equipment Manager on the character panel.
 2. Open **Options → AddOns → SetShifter**, or type `/setshifter`.
-3. Pick a set for each form. **Caster** (no form) is a form too. Map it to a set if you want your gear to switch back when you leave a form.
+3. Pick a set for each form. **Caster** (no form) is a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
 
 SetShifter equips the set mapped to a form whenever you shift into that form.
 
 ### Notes
 
-- **Combat:** armor can't be changed during combat. If you shift while in combat, SetShifter equips the set for your current form as soon as combat ends.
+- **Combat:** armor can't be changed during combat, but weapons can. If you shift while in combat, SetShifter swaps the set's weapons right away (main hand, off hand/shield and ranged). It equips the rest of the set for your current form as soon as combat ends.
 - **Mapped by name:** forms are mapped by their spell name, not their position on the stance bar. Your mappings keep working when talents add or remove forms, such as Moonkin Form.
 - **Login:** logging in never swaps your gear.
 - **Per character:** each character has its own settings.

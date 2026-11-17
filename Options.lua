@@ -80,8 +80,8 @@ local subtitle = panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall"
 subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -6)
 subtitle:SetPoint("RIGHT", panel, "RIGHT", -PAD, 0)
 subtitle:SetJustifyH("LEFT")
-subtitle:SetText("Choose an Equipment Manager set for each form. It is equipped when you shift into that form. "
-	.. "In combat, the swap waits until combat ends.")
+subtitle:SetText("Choose an Equipment Manager set for each form or stance. It is equipped when you shift into it. "
+	.. "In combat, only weapons are swapped; the rest of the set goes on when combat ends.")
 
 local enable = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
 enable:SetSize(24, 24)

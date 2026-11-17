@@ -1,7 +1,7 @@
 ## Interface: 16001, 11509
 ## Title: SetShifter
 ## Notes: Equips an Equipment Manager set when you change shapeshift form.
-## Version: 1.1.0
+## Version: 1.2.0
 ## SavedVariablesPerCharacter: SetShifterDB
 
 SetShifter.lua
