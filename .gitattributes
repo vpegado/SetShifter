@@ -3,3 +3,4 @@
 .gitignore export-ignore
 .github export-ignore
 screenshots export-ignore
+media export-ignore
