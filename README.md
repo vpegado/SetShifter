@@ -16,7 +16,9 @@ Hunter aspects aren't on the stance bar in Classic, so hunters can't use SetShif
 
 ## Installation
 
-1. Download or clone this repository into `World of Warcraft/<flavor>/Interface/AddOns/SetShifter`.
+Install SetShifter from [CurseForge](https://www.curseforge.com/wow/addons/setshifter) with the CurseForge app, or install it manually:
+
+1. Download the zip from [CurseForge](https://www.curseforge.com/wow/addons/setshifter) or the [latest GitHub release](https://github.com/vpegado/SetShifter/releases/latest), and extract it into `World of Warcraft/<flavor>/Interface/AddOns/`. You can also clone this repository into `World of Warcraft/<flavor>/Interface/AddOns/SetShifter`.
 2. Restart the game, or reload the UI with `/reload`.
 
 ## Usage
