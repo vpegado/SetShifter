@@ -1,0 +1,6 @@
+package-as: SetShifter
+
+# Dotfiles and folders (.github, .gitattributes, ...) are skipped automatically.
+ignore:
+  - screenshots
+  - media
