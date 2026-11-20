@@ -2,7 +2,7 @@
 ## Title: SetShifter
 ## Notes: Automatically equips your gear sets when you shift forms, change stances, mount up or go fishing.
 ## IconTexture: Interface\PaperDollInfoFrame\UI-GearManager-Button
-## Version: 1.5.0
+## Version: 1.5.1
 ## SavedVariablesPerCharacter: SetShifterDB
 ## X-Curse-Project-ID: 1815271
 
