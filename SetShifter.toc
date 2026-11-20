@@ -1,6 +1,6 @@
 ## Interface: 16001, 11509
 ## Title: SetShifter
-## Notes: Equips an Equipment Manager set when you change shapeshift form.
+## Notes: Automatically equips your gear sets when you shift forms, change stances, mount up or go fishing.
 ## IconTexture: Interface\PaperDollInfoFrame\UI-GearManager-Button
 ## Version: 1.5.0
 ## SavedVariablesPerCharacter: SetShifterDB

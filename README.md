@@ -1,6 +1,6 @@
 # SetShifter
 
-A World of Warcraft addon that equips an Equipment Manager set when you change shapeshift form.
+A World of Warcraft addon that automatically equips your Equipment Manager sets when you shift forms, change stances, mount up or go fishing.
 
 ![SetShifter settings panel, with a Fishing set and Fish key, and a gear set mapped to each druid form](screenshots/options.png)
 
