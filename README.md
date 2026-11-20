@@ -47,7 +47,7 @@ You need two presses because an addon can't equip the pole and cast in the same 
 While you're fishing, your Fishing set takes priority over your form's set. Your form's set goes back on when:
 
 - **You enter combat.** Your weapons are swapped back right away, and the rest of your gear after combat.
-- **You mount or change form.**
+- **You mount or shift into a form.** Dropping out of a form to cast Fishing (for example from Cat Form) doesn't count.
 - **You stop fishing for 60 seconds.** Change the delay with `/setshifter fishtimeout <seconds>`, or use `0` to turn it off.
 - **You type `/setshifter stopfishing`.**
 

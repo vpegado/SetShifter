@@ -6,7 +6,7 @@
 -- are mounted, and your form's set goes back on when you dismount.
 -- "Fishing" can have a set too: the Fish key (Key Bindings > AddOns >
 -- SetShifter) equips it on the first press and casts Fishing on the next.
--- Your form's set goes back on when you enter combat, mount, change form,
+-- Your form's set goes back on when you enter combat, mount, shift into a form,
 -- or stop fishing for a while.
 --
 -- Works for any class with a stance bar: druid forms, warrior stances, etc.
@@ -386,10 +386,18 @@ local function IsFishingSpell(spellID)
 end
 
 local function OnStateChanged()
-	-- Mounting or changing form ends fishing.
-	if fishing and (ns.IsMounted() or ns.CurrentFormKey() ~= fishingForm) then
-		ExitFishing()
-		return
+	if fishing then
+		local formKey = ns.CurrentFormKey()
+		if formKey == NO_FORM and fishingForm ~= NO_FORM then
+			-- Casting Fishing drops you out of your form (e.g. Cat Form).
+			-- That's part of fishing, so keep fishing; shifting back into a
+			-- form from here ends it.
+			fishingForm = NO_FORM
+		elseif ns.IsMounted() or formKey ~= fishingForm then
+			-- Mounting or shifting into a form ends fishing.
+			ExitFishing()
+			return
+		end
 	end
 	local key = ns.CurrentKey()
 	if key == lastKey then return end

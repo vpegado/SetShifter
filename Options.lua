@@ -166,7 +166,7 @@ keyHint:SetPoint("LEFT", keyButton, "RIGHT", 6, 0)
 keyHint:SetPoint("RIGHT", panel, "RIGHT", -PAD, 0)
 keyHint:SetJustifyH("LEFT")
 
-local KEY_HINT = "Click, then press a key. Right-click to unbind."
+local KEY_HINT = "Click to set, right-click to clear."
 local keyMessage -- shown instead of the hint after a change, e.g. a conflict
 
 -- Keys that are only modifiers; wait for the real key.
@@ -202,7 +202,7 @@ local function UpdateKeyButton()
 	keyButton:SetText(key and KeyText(key) or "|cff888888Not bound|r")
 	keyButton:SetEnabled(not InCombatLockdown())
 	if InCombatLockdown() then
-		keyHint:SetText("Key bindings can't be changed in combat.")
+		keyHint:SetText("Can't change keys in combat.")
 	else
 		keyHint:SetText(keyMessage or KEY_HINT)
 	end
