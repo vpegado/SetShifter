@@ -145,9 +145,9 @@ local function ShowHint()
 	if target and target:IsVisible() then GlowOn(target) end
 	local key = GetBindingKey(TRAVEL_BINDING)
 	local text = key
-		and ("Aquatic Form: press %s"):format(GetBindingText and GetBindingText(key) or key)
+		and ("Aquatic Form: press %s"):format(ns.KeyName(key))
 		or "Aquatic Form is ready"
-	if UIErrorsFrame then UIErrorsFrame:AddMessage(text, 0.4, 0.8, 1) end
+	ns.Notify(text)
 end
 
 -- There's no event for starting or stopping swimming, so check a few times

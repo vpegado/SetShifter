@@ -46,6 +46,13 @@ local function Print(msg)
 end
 ns.Print = Print
 
+-- Short on-screen hints (e.g. "press the Fish key again"), shown in the
+-- error-message area in light blue. Players can turn them off.
+function ns.Notify(text)
+	if ns.db and ns.db.showMessages == false then return end
+	if UIErrorsFrame then UIErrorsFrame:AddMessage(text, 0.4, 0.8, 1) end
+end
+
 local function GetSpellNameCompat(id)
 	if C_Spell and C_Spell.GetSpellName then
 		return C_Spell.GetSpellName(id)
@@ -53,6 +60,17 @@ local function GetSpellNameCompat(id)
 	return (GetSpellInfo(id))
 end
 ns.GetSpellName = GetSpellNameCompat
+
+-- A key binding as players read it: "Shift-Mouse Button 5", not
+-- "SHIFT-BUTTON5". GetBindingText names the key but leaves the modifiers
+-- in capitals.
+local MODIFIER_NAMES = { ALT = "Alt", CTRL = "Ctrl", SHIFT = "Shift", META = "Meta" }
+function ns.KeyName(key)
+	local text = GetBindingText and GetBindingText(key) or key
+	return (text:gsub("(%u+)%-", function(mod)
+		return MODIFIER_NAMES[mod] and (MODIFIER_NAMES[mod] .. "-")
+	end))
+end
 
 local function InCombat()
 	return InCombatLockdown() or UnitAffectingCombat("player")
@@ -365,6 +383,9 @@ fishButton:SetScript("PreClick", function(self)
 		lastFishEquip = GetTime()
 		self:SetAttribute("type", "macro")
 		self:SetAttribute("macrotext", "/equipset " .. db.map[FISHING])
+		local key = GetBindingKey(FISH_BINDING)
+		local keyName = key and ns.KeyName(key) or "the Fish key"
+		ns.Notify(("Fishing set on: press %s again to cast"):format(keyName))
 	else
 		self:SetAttribute("type", "spell")
 	end
@@ -450,6 +471,7 @@ frame:SetScript("OnEvent", function(_, event, arg1, _, arg3)
 		db.minimap.angle = db.minimap.angle or 225
 		if db.fishingTimeout == nil then db.fishingTimeout = 60 end
 		if db.hookBobber == nil then db.hookBobber = false end
+		if db.showMessages == nil then db.showMessages = true end
 		ns.db = db
 		-- Left over from a crash or disconnect while fishing: put the
 		-- player's interact settings back.
@@ -523,7 +545,7 @@ local function ListMappings()
 	Print("Current form: " .. ns.CurrentFormKey() .. (ns.IsMounted() and " (mounted)" or "")
 		.. (fishing and " (fishing)" or "") .. (db.enabled and "" or " (auto-swap OFF)"))
 	local key = GetBindingKey(FISH_BINDING)
-	Print("Fish key: " .. (key or "|cff888888not bound|r (Key Bindings > AddOns > SetShifter)"))
+	Print("Fish key: " .. (key and ns.KeyName(key) or "|cff888888not bound|r (Key Bindings > AddOns > SetShifter)"))
 end
 
 SLASH_SETSHIFTER1 = "/setshifter"

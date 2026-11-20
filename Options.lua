@@ -129,6 +129,9 @@ local minimap = CheckBox(enable, 0, -2, "Show minimap button", function(on)
 	ns.UpdateMinimapButton()
 end)
 
+local messages = CheckBox(minimap, 0, -2, "Show on-screen hints (e.g. \"press the Fish key again\")",
+	function(on) ns.db.showMessages = on end)
+
 local function SectionHeader(anchor, x, y, text)
 	local header = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	header:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", x, y)
@@ -204,7 +207,7 @@ local function ModifierPrefix()
 end
 
 local function KeyText(key)
-	return GetBindingText and GetBindingText(key) or key
+	return ns.KeyName(key)
 end
 
 local keyRows = {}
@@ -307,7 +310,7 @@ end
 ---------------------------------------------------------------------------
 -- Fishing: Fishing set, Fish key and bobber hooking
 ---------------------------------------------------------------------------
-local fishHeader = SectionHeader(minimap, 4, -16, "Fishing")
+local fishHeader = SectionHeader(messages, 4, -16, "Fishing")
 
 local fishRow = RowBelow(fishHeader, -4)
 local fishKeyRow = KeyRow(fishRow, 0, "Fish key", ns.FISH_BINDING)
@@ -452,6 +455,7 @@ function Refresh()
 	if scroll then panel:SetWidth(scroll:GetWidth()) end
 	enable:SetChecked(ns.db.enabled)
 	minimap:SetChecked(not ns.db.minimap.hide)
+	messages:SetChecked(ns.db.showMessages ~= false)
 	hook:SetChecked(ns.db.hookBobber)
 	for _, row in ipairs(keyRows) do UpdateKeyRow(row) end
 	if landRows then

@@ -39,7 +39,7 @@ The **Fishing** section of the settings lets you pick a set to fish in, with you
 
 With the key bound:
 
-1. The first press equips your Fishing set.
+1. The first press equips your Fishing set, and a message reminds you to press the key again.
 2. The next press casts Fishing, and so does every press after that.
 
 You need two presses because an addon can't equip the pole and cast in the same key press: the cast would fire before the pole is in your hand.
@@ -95,6 +95,7 @@ To hide it, untick **Show minimap button** in the settings, or type `/setshifter
 
 - **Combat:** armor can't be changed during combat, but weapons can. If you shift while in combat, SetShifter swaps the set's weapons right away (main hand, off hand/shield and ranged). It equips the rest of the set for your current form as soon as combat ends.
 - **Mapped by name:** forms are mapped by their spell name, not their position on the stance bar. Your mappings keep working when talents add or remove forms, such as Moonkin Form.
+- **On-screen hints:** short light-blue messages, such as the reminder to press the Fish key again or the Aquatic Form hint, appear where WoW shows error messages. To turn them off, untick **Show on-screen hints** in the settings. The Aquatic Form highlight on the stance bar has its own checkbox.
 - **Login:** logging in never swaps your gear.
 - **Per character:** each character has its own SetShifter settings. The Fish and Travel keys follow WoW's own setting: they're per character if **Character Specific Key Bindings** is ticked in Key Bindings, and account-wide otherwise.
 
