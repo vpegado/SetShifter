@@ -112,7 +112,8 @@ end)
 button:SetScript("OnEnter", function(self)
 	GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 	GameTooltip:AddLine("SetShifter")
-	GameTooltip:AddDoubleLine("Form:", ns.CurrentFormKey() .. (ns.IsMounted() and " (mounted)" or ""),
+	GameTooltip:AddDoubleLine("Form:", ns.CurrentFormKey() .. (ns.IsMounted() and " (mounted)" or "")
+		.. (ns.IsFishing() and " (fishing)" or ""),
 		nil, nil, nil, 1, 1, 1)
 	GameTooltip:AddDoubleLine("Set:", CurrentSet() or "|cff888888None|r", nil, nil, nil, 1, 1, 1)
 	if not ns.db.enabled then

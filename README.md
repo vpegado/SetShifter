@@ -25,13 +25,46 @@ Install SetShifter from [CurseForge](https://www.curseforge.com/wow/addons/setsh
 
 1. Create your gear sets in the Equipment Manager on the character panel.
 2. Open **Options → AddOns → SetShifter**, or type `/setshifter`.
-3. Pick a set for each form. **No form** counts as a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
+3. Pick a set for each form. **Default** is the no-form state (caster form for druids) and counts as a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
 
 SetShifter equips the set mapped to a form whenever you shift into that form.
 
 ### Mounted
 
 The **Mounted** row lets you pick a set to wear while mounted, such as one with riding gloves, spurs or a Carrot on a Stick. While you're mounted it takes priority over your form's set, and your form's set goes back on when you dismount. Leave it at **None** to keep your gear unchanged when you mount.
+
+### Fishing
+
+The **Fishing** section of the settings lets you pick a set to fish in, with your fishing pole and any fishing gear. To use it, set a **Fish** key. In the SetShifter settings, click the **Fish key** button and press a key; right-click it to unbind. You can also set it under **Key Bindings → AddOns → SetShifter**. Either way, it's the same binding.
+
+With the key bound:
+
+1. The first press equips your Fishing set.
+2. The next press casts Fishing, and so does every press after that.
+
+You need two presses because an addon can't equip the pole and cast in the same key press: the cast would fire before the pole is in your hand.
+
+While you're fishing, your Fishing set takes priority over your form's set. Your form's set goes back on when:
+
+- **You enter combat.** Your weapons are swapped back right away, and the rest of your gear after combat.
+- **You mount or change form.**
+- **You stop fishing for 60 seconds.** Change the delay with `/setshifter fishtimeout <seconds>`, or use `0` to turn it off.
+- **You type `/setshifter stopfishing`.**
+
+If your current form has no set, SetShifter puts back the set you were wearing before you started fishing. Casting Fishing from your spellbook or an action bar also counts as fishing, as long as a Fishing set is picked or bobber hooking is on.
+
+#### Bobber hooking
+
+Tick **Fish key also hooks the bobber** in the settings, or type `/setshifter hook`, to fish with one key:
+
+1. Press the Fish key to cast.
+2. When the bobber splashes, press the Fish key again to hook the fish.
+
+While the bobber is out, the Fish key works as **Interact with Target**. SetShifter also widens the interact range so the bobber can be targeted, and shows the interact icon over it. Between casts, the key casts Fishing again.
+
+These interact settings stay on for as long as you're fishing. When you stop fishing (combat, mounting, changing form, the timeout or `/setshifter stopfishing`), they go back to exactly what they were before. They're also put back when you log out, and the next time you log in after a crash or disconnect.
+
+Bobber hooking is off by default.
 
 ### Minimap button
 
@@ -57,10 +90,13 @@ To hide it, untick **Show minimap button** in the settings, or type `/setshifter
 | Command | Description |
 | --- | --- |
 | `/setshifter` | Open the settings panel |
-| `/setshifter list` | Show which set is mapped to each form and to Mounted |
+| `/setshifter list` | Show which set is mapped to each form, Mounted and Fishing, and your Fish key |
 | `/setshifter equip` | Equip the set for your current form (or Mounted, if you're mounted) now |
 | `/setshifter on` / `off` | Turn automatic swapping on or off |
 | `/setshifter minimap` | Show or hide the minimap button |
+| `/setshifter hook` | Turn bobber hooking with the Fish key on or off |
+| `/setshifter stopfishing` | Stop fishing and put your gear and interact settings back now |
+| `/setshifter fishtimeout <seconds>` | Stop fishing after this long without a cast (`0` = never; default 60) |
 
 ## License
 

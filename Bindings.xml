@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="CLICK SetShifterFishButton:LeftButton" header="SETSHIFTER" category="ADDONS">
+		-- handled by SetShifterFishButton (equip the Fishing set, then cast Fishing)
+	</Binding>
+</Bindings>
