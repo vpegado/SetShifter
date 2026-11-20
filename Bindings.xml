@@ -2,4 +2,7 @@
 	<Binding name="CLICK SetShifterFishButton:LeftButton" header="SETSHIFTER" category="ADDONS">
 		-- handled by SetShifterFishButton (equip the Fishing set, then cast Fishing)
 	</Binding>
+	<Binding name="CLICK SetShifterTravelButton:LeftButton" category="ADDONS">
+		-- handled by SetShifterTravelButton (Aquatic Form in water, else your travel form; druids only)
+	</Binding>
 </Bindings>

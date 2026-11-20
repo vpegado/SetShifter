@@ -2,7 +2,7 @@
 
 A World of Warcraft addon that automatically equips your Equipment Manager sets when you shift forms, change stances, mount up or go fishing.
 
-![SetShifter settings panel, with a Fishing set and Fish key, and a gear set mapped to each druid form](screenshots/options.png)
+![SetShifter settings panel, with the Fishing and Travel sections and a gear set mapped to each druid form](screenshots/options.png)
 
 It works with any class that has a stance bar:
 
@@ -25,7 +25,7 @@ Install SetShifter from [CurseForge](https://www.curseforge.com/wow/addons/setsh
 
 1. Create your gear sets in the Equipment Manager on the character panel.
 2. Open **Options → AddOns → SetShifter**, or type `/setshifter`.
-3. Pick a set for each form. **Default** is the no-form state (caster form for druids) and counts as a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
+3. In the **Sets** section, pick a set for each form. **Default** is the no-form state (caster form for druids) and counts as a form too. Map it to a set if you want your gear to switch back when you leave a form. Warriors don't see this row because they are always in a stance.
 
 SetShifter equips the set mapped to a form whenever you shift into that form.
 
@@ -48,6 +48,7 @@ While you're fishing, your Fishing set takes priority over your form's set. Your
 
 - **You enter combat.** Your weapons are swapped back right away, and the rest of your gear after combat.
 - **You mount or shift into a form.** Dropping out of a form to cast Fishing (for example from Cat Form) doesn't count.
+- **You zone,** for example by hearthing or taking a portal.
 - **You stop fishing for 60 seconds.** Change the delay with `/setshifter fishtimeout <seconds>`, or use `0` to turn it off.
 - **You type `/setshifter stopfishing`.**
 
@@ -62,9 +63,23 @@ Tick **Fish key also hooks the bobber** in the settings, or type `/setshifter ho
 
 While the bobber is out, the Fish key works as **Interact with Target**. SetShifter also widens the interact range so the bobber can be targeted, and shows the interact icon over it. Between casts, the key casts Fishing again.
 
-These interact settings stay on for as long as you're fishing. When you stop fishing (combat, mounting, changing form, the timeout or `/setshifter stopfishing`), they go back to exactly what they were before. They're also put back when you log out, and the next time you log in after a crash or disconnect.
+These interact settings stay on for as long as you're fishing. When you stop fishing (combat, mounting, shifting into a form, zoning, the timeout or `/setshifter stopfishing`), they go back to exactly what they were before. They're also put back when you log out, and the next time you log in after a crash or disconnect.
 
 Bobber hooking is off by default.
+
+### Travel key (druids)
+
+Druids get a **Travel** section in the settings with one key for getting around:
+
+- **In water:** Aquatic Form.
+- **Outdoors on land:** Travel Form. You can pick another form, or None.
+- **Anywhere else** (indoors, or outdoors if you picked None): Cat Form. You can pick another form, or None.
+
+Bind it from the **Travel key** button in the settings, or under **Key Bindings → AddOns → SetShifter**. Pressing it while you're already in that form shifts you back out, the same as clicking the form on your stance bar. Your gear swaps as usual when you change form.
+
+When you start swimming, SetShifter lights up the Aquatic Form button on your stance bar and shows a short message with your Travel key. If a bar addon (such as Bartender or ElvUI) hides the default stance bar, you get the message but not the highlight. To turn this off, untick **Highlight Aquatic Form when you start swimming**.
+
+Addons can't change your form by themselves, because WoW requires a key press or click for every form change. So SetShifter can't shift you into Aquatic Form automatically; the Travel key and the hint make it a single press.
 
 ### Minimap button
 
@@ -81,7 +96,7 @@ To hide it, untick **Show minimap button** in the settings, or type `/setshifter
 - **Combat:** armor can't be changed during combat, but weapons can. If you shift while in combat, SetShifter swaps the set's weapons right away (main hand, off hand/shield and ranged). It equips the rest of the set for your current form as soon as combat ends.
 - **Mapped by name:** forms are mapped by their spell name, not their position on the stance bar. Your mappings keep working when talents add or remove forms, such as Moonkin Form.
 - **Login:** logging in never swaps your gear.
-- **Per character:** each character has its own settings.
+- **Per character:** each character has its own SetShifter settings. The Fish and Travel keys follow WoW's own setting: they're per character if **Character Specific Key Bindings** is ticked in Key Bindings, and account-wide otherwise.
 
 ## Slash commands
 

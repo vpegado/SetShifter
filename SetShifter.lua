@@ -52,6 +52,7 @@ local function GetSpellNameCompat(id)
 	end
 	return (GetSpellInfo(id))
 end
+ns.GetSpellName = GetSpellNameCompat
 
 local function InCombat()
 	return InCombatLockdown() or UnitAffectingCombat("player")
@@ -371,12 +372,15 @@ fishButton:SetScript("PreClick", function(self)
 end)
 
 -- React on only one edge of the key press, so one press doesn't cast twice.
+-- Secure buttons clicked by key bindings (the Fish key, and the Travel key
+-- in Druid.lua).
+ns.keyButtons = { fishButton }
+
 local function UpdateFishClicks()
 	if InCombatLockdown() then return end
-	if GetCVarBool("ActionButtonUseKeyDown") then
-		fishButton:RegisterForClicks("AnyDown")
-	else
-		fishButton:RegisterForClicks("AnyUp")
+	local edge = GetCVarBool("ActionButtonUseKeyDown") and "AnyDown" or "AnyUp"
+	for _, button in ipairs(ns.keyButtons) do
+		button:RegisterForClicks(edge)
 	end
 end
 
